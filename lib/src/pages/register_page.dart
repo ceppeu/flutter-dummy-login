@@ -3,8 +3,8 @@ import 'package:form_validation/src/bloc/provider.dart';
 import 'package:form_validation/src/providers/user_provider.dart';
 import 'package:form_validation/src/utils/utils.dart' as utils;
 
-class LoginPage extends StatelessWidget {
-  final userProvider = new UserProvider();
+class RegisterPage extends StatelessWidget {
+  final UserProvider userProvider = new UserProvider();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +37,7 @@ class LoginPage extends StatelessWidget {
                 ]),
             child: Column(
               children: [
-                Text('Ingreso', style: TextStyle(fontSize: 20.0)),
+                Text('Registro', style: TextStyle(fontSize: 20.0)),
                 SizedBox(height: 60.0),
                 _createEmail(bloc),
                 SizedBox(height: 40.0),
@@ -49,9 +49,8 @@ class LoginPage extends StatelessWidget {
           ),
           SizedBox(height: 20.0),
           FlatButton(
-              onPressed: () =>
-                  Navigator.pushReplacementNamed(context, 'registro'),
-              child: Text('Registrarme')),
+              onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
+              child: Text('¿Ya tienes cuenta?')),
           SizedBox(height: 100.0)
         ],
       ),
@@ -114,26 +113,26 @@ class LoginPage extends StatelessWidget {
         return RaisedButton(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
-              child: Text('Ingresar'),
+              child: Text('Crear cuenta'),
             ),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5.0)),
             elevation: 0.0,
             color: Colors.deepPurple,
             textColor: Colors.white,
-            onPressed: snapshot.hasData ? () => _login(bloc, context) : null);
+            onPressed:
+                snapshot.hasData ? () => _register(bloc, context) : null);
       },
     );
   }
 
-  _login(LoginBloc bloc, BuildContext context) async {
-    Map info = await userProvider.login(bloc.email, bloc.password);
+  _register(LoginBloc bloc, BuildContext context) async {
+    Map info = await userProvider.newUser(bloc.email, bloc.password);
     if (info['ok']) {
       Navigator.pushReplacementNamed(context, 'home');
     } else {
       utils.showAlert(context, info['mensaje']);
     }
-    // Navigator.pushReplacementNamed(context, 'home');
   }
 
   Widget _createBg(BuildContext context) {

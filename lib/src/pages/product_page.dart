@@ -125,7 +125,6 @@ class _ProductPageState extends State<ProductPage> {
       _saving = true;
     });
     if (_photo != null) {
-      print('Entro aqui');
       product.imageUrl = await productsProvider.uploadImage(_photo);
     }
     if (product.id == null) {
