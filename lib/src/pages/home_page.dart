@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:form_validation/src/bloc/provider.dart';
 import 'package:form_validation/src/models/product_model.dart';
-import 'package:form_validation/src/providers/products_provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -8,17 +8,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final productsProvider = new ProductsProvider();
-
   @override
   Widget build(BuildContext context) {
-    // final bloc = Provider.of(context);
-
+    final productsBloc = Provider.productsBloc(context);
+    productsBloc.getProducts();
     return Scaffold(
       appBar: AppBar(
         title: Text('Home Page'),
       ),
-      body: _createList(),
+      body: _createList(productsBloc),
       floatingActionButton: _createButton(context),
     );
   }
@@ -30,9 +28,9 @@ class _HomePageState extends State<HomePage> {
         onPressed: () => Navigator.pushNamed(context, 'producto'));
   }
 
-  Widget _createList() {
-    return FutureBuilder(
-      future: productsProvider.getProducts(),
+  Widget _createList(ProductsBloc productsBloc) {
+    return StreamBuilder(
+      stream: productsBloc.productsStream,
       builder:
           (BuildContext context, AsyncSnapshot<List<ProductModel>> snapshot) {
         if (snapshot.hasData) {
@@ -40,7 +38,7 @@ class _HomePageState extends State<HomePage> {
           return ListView.builder(
             itemCount: products.length,
             itemBuilder: (context, index) =>
-                _createItem(products[index], context),
+                _createItem(products[index], context, productsBloc),
           );
         } else {
           return Center(child: CircularProgressIndicator());
@@ -49,12 +47,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _createItem(ProductModel product, BuildContext context) {
+  Widget _createItem(
+      ProductModel product, BuildContext context, ProductsBloc productsBloc) {
     return Dismissible(
         key: UniqueKey(),
         background: Container(color: Colors.red),
         onDismissed: (direction) {
-          productsProvider.deleteProduct(product.id);
+          productsBloc.deleteProduct(product.id);
         },
         child: Column(
           children: [

@@ -31,6 +31,7 @@ class ProductsProvider {
     final res = await http.get(url);
     final Map<String, dynamic> decodedData = json.decode(res.body);
     final List<ProductModel> products = new List();
+    print(decodedData);
     if (decodedData == null) return [];
     decodedData.forEach((key, value) {
       final prodTmp = ProductModel.fromJson(value);
