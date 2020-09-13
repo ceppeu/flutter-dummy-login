@@ -41,3 +41,18 @@ Esta sección es bastante ilustrativa en cuanto al uso de StreamTransformers y B
 Esta sección tiene por objetivo trabajar con data y enviarla a un servicio REST como también poder trabajar con las fotografías e imágenes.
 
 El código que aquí verán, sirve para poder subir cualquier tipo de archivo al backend, no necesariamente sólo fotos.
+
+### Tecera lección
+- Funcionamiento completo del login
+
+- Registro de nuevos usuarios
+
+- Firebase Auth Rest API
+
+- Manejo de Tokens
+
+- Alertas
+
+- Habilitar autenticación en Firebase
+
+Aquí vamos a trabajar en hacer funcional nuestro login y que nuestros servicios utilicen el token que Firebase nos regresará
